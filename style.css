@@ -1,0 +1,25 @@
+body {
+  font-family: Arial;
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+}
+
+input {
+  display: block;
+  margin: 10px 0;
+  padding: 8px;
+  width: 100%;
+}
+
+button {
+  padding: 10px;
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+li {
+  margin: 8px 0;
+}
