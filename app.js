@@ -3,7 +3,7 @@ const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 
 const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-// ✅ Cargar gastos
+//  Cargar gastos
 async function loadExpenses() {
   const { data, error } = await supabase
     .from("expenses")
@@ -22,7 +22,7 @@ async function loadExpenses() {
   }
 }
 
-// ✅ Agregar gasto
+//  Agregar gasto
 async function addExpense() {
   const date = document.getElementById("date").value;
   const amount = document.getElementById("amount").value;
@@ -30,6 +30,26 @@ async function addExpense() {
   const description = document.getElementById("description").value;
 
   const user = (await supabase.auth.getUser()).data.user;
+  
+  console.log("USER:", user);
+
+  const { data, error } = await supabase.from("expenses").insert([
+    {
+      date,
+      amount,
+      category,
+      description,
+      user_id: user ? user.id : null
+    }
+  ]);
+
+  console.log("DATA:", data);
+  console.log("ERROR:", error);
+}
+
+
+
+  
 
   if (!user) {
     alert("You must be logged in");
@@ -49,7 +69,7 @@ async function addExpense() {
   loadExpenses();
 }
 
-// ✅ Ejecutar al cargar
+//  Ejecutar al cargar
 loadExpenses();
 
 console.log("Supabase conectado");
