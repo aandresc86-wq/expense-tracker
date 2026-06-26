@@ -1,33 +1,106 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Expense Tracker</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
+  <title>Personal Finance Analytics App</title>
+
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
 
-<h1>Expense Tracker</h1>
+  <div class="container">
 
-<h2>Add Expense</h2>
+    <header>
+      <h1>Personal Finance Analytics App</h1>
+      <p>Track, analyze and understand your monthly expenses.</p>
+    </header>
 
-<input type="date" id="date">
-<input type="number" id="amount" placeholder="Amount">
-<input type="text" id="category" placeholder="Category">
-<input type="text" id="description" placeholder="Description">
+    <!-- AUTH SECTION -->
+    <section class="card" id="auth-section">
+      <h2>Login / Sign Up</h2>
 
-<button onclick="addExpense()">Add</button>
+      <input type="email" id="email" placeholder="Email" />
+      <input type="password" id="password" placeholder="Password" />
 
-<h2>Expenses</h2>
-<ul id="expense-list"></ul>
+      <div class="button-row">
+        <button onclick="signUp()">Sign Up</button>
+        <button onclick="signIn()">Login</button>
+      </div>
 
-<!-- ✅ Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+      <p id="auth-message"></p>
+    </section>
 
-<!-- ✅ Tu JS -->
-<script src="app.js"></script>
+    <!-- APP SECTION -->
+    <section id="app-section" style="display: none;">
+
+      <section class="card user-card">
+        <div>
+          <h2>Welcome</h2>
+          <p id="user-email"></p>
+        </div>
+
+        <button class="secondary" onclick="signOut()">Logout</button>
+      </section>
+
+      <!-- KPI DASHBOARD -->
+      <section class="dashboard-grid">
+
+        <div class="kpi-card">
+          <h3>Total Expenses</h3>
+          <p id="total-expenses">$0</p>
+        </div>
+
+        <div class="kpi-card">
+          <h3>Number of Expenses</h3>
+          <p id="expense-count">0</p>
+        </div>
+
+        <div class="kpi-card">
+          <h3>Top Category</h3>
+          <p id="top-category">-</p>
+        </div>
+
+      </section>
+
+      <!-- ADD EXPENSE -->
+      <section class="card">
+        <h2>Add Expense</h2>
+
+        <input type="date" id="date" />
+        <input type="number" id="amount" placeholder="Amount" />
+        <input type="text" id="category" placeholder="Category" />
+        <input type="text" id="description" placeholder="Description" />
+
+        <button onclick="addExpense()">Add Expense</button>
+      </section>
+
+      <!-- CHART -->
+      <section class="card">
+        <h2>Expenses by Category</h2>
+        <canvas id="categoryChart"></canvas>
+      </section>
+
+      <!-- EXPENSE LIST -->
+      <section class="card">
+        <h2>Expense History</h2>
+        <ul id="expense-list"></ul>
+      </section>
+
+    </section>
+
+  </div>
+
+  <!-- Supabase JS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- App JS -->
+  <script src="app.js"></script>
 
 </body>
 </html>
