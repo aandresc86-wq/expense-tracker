@@ -5,7 +5,7 @@ console.log("app.js cargado correctamente ✅");
 // ===============================
 
 const supabaseUrl = "https://jqgnrldsgedwzxcsdojk.supabase.co";
-const supabaseKey = "TU_ANON_PUBLIC_KEY_AQUI";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpxZ25ybGRzZ2Vkd3p4Y3Nkb2prIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0NTcxMTksImV4cCI6MjA5ODAzMzExOX0.aFMizATCvVF_BhoAmXgkyf6u9qMZx8wC27QL8zk536k";
 
 const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 
