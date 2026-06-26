@@ -1,85 +1,93 @@
-const supabaseUrl = "https://jqgnrldsgedwzxcsdojk.supabase.co/rest/v1/";
+// ✅ Supabase config
+const supabaseUrl = "https://jqgnrldsgedwzxcsdojk.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpxZ25ybGRzZ2Vkd3p4Y3Nkb2prIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0NTcxMTksImV4cCI6MjA5ODAzMzExOX0.aFMizATCvVF_BhoAmXgkyf6u9qMZx8wC27QL8zk536k";
 
-//const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+console.log("app.js cargado correctamente ✅");
 
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-// ✅ IMPORTANTE: la función debe existir
-async function addExpense() {
-  console.log("CLICK FUNCIONA ✅");
-}
+console.log("Supabase conectado ✅");
 
-
-
-
-//  Cargar gastos
+// ✅ Cargar gastos desde Supabase
 async function loadExpenses() {
-  const { data, error } = await supabase
+  const { data, error } = await supabaseClient
     .from("expenses")
     .select("*")
     .order("date", { ascending: false });
 
+  if (error) {
+    console.error("Error cargando gastos:", error);
+    return;
+  }
+
+  console.log("Gastos cargados:", data);
+
   const list = document.getElementById("expense-list");
   list.innerHTML = "";
 
-  if (data) {
-    data.forEach(e => {
-      const li = document.createElement("li");
-      li.textContent = `${e.date} - $${e.amount} - ${e.category}`;
-      list.appendChild(li);
-    });
+  if (!data || data.length === 0) {
+    const li = document.createElement("li");
+    li.textContent = "No expenses found.";
+    list.appendChild(li);
+    return;
   }
+
+  data.forEach((expense) => {
+    const li = document.createElement("li");
+    li.textContent = `${expense.date} - $${expense.amount} - ${expense.category} - ${expense.description || ""}`;
+    list.appendChild(li);
+  });
 }
 
-//  Agregar gasto
+// ✅ Agregar gasto a Supabase
 async function addExpense() {
+  console.log("CLICK FUNCIONA ✅");
+
   const date = document.getElementById("date").value;
   const amount = document.getElementById("amount").value;
   const category = document.getElementById("category").value;
   const description = document.getElementById("description").value;
 
-  const user = (await supabase.auth.getUser()).data.user;
-  
-  console.log("USER:", user);
+  console.log("Datos capturados:", {
+    date,
+    amount,
+    category,
+    description
+  });
 
-  const { data, error } = await supabase.from("expenses").insert([
-    {
-      date,
-      amount,
-      category,
-      description,
-      user_id: user ? user.id : null
-    }
-  ]);
-
-  console.log("DATA:", data);
-  console.log("ERROR:", error);
-}
-
-
-
-  
-
-  if (!user) {
-    alert("You must be logged in");
+  if (!date || !amount || !category) {
+    alert("Please complete date, amount and category.");
     return;
   }
 
-  await supabase.from("expenses").insert([
-    {
-      date,
-      amount,
-      category,
-      description,
-      user_id: user.id
-    }
-  ]);
+  const { data, error } = await supabaseClient
+    .from("expenses")
+    .insert([
+      {
+        date: date,
+        amount: Number(amount),
+        category: category,
+        description: description
+      }
+    ])
+    .select();
+
+  if (error) {
+    console.error("Error insertando gasto:", error);
+    alert("Error saving expense. Check console.");
+    return;
+  }
+
+  console.log("Gasto insertado correctamente:", data);
+  alert("Expense saved successfully ✅");
+
+  document.getElementById("date").value = "";
+  document.getElementById("amount").value = "";
+  document.getElementById("category").value = "";
+  document.getElementById("description").value = "";
 
   loadExpenses();
 }
 
-//  Ejecutar al cargar
+// ✅ Ejecutar al cargar la página
 loadExpenses();
-
-console.log("Supabase conectado");
