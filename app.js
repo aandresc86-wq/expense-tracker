@@ -1,7 +1,17 @@
 const supabaseUrl = "https://jqgnrldsgedwzxcsdojk.supabase.co/rest/v1/";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpxZ25ybGRzZ2Vkd3p4Y3Nkb2prIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI0NTcxMTksImV4cCI6MjA5ODAzMzExOX0.aFMizATCvVF_BhoAmXgkyf6u9qMZx8wC27QL8zk536k";
 
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+//const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+// ✅ IMPORTANTE: la función debe existir
+async function addExpense() {
+  console.log("CLICK FUNCIONA ✅");
+}
+
+
+
 
 //  Cargar gastos
 async function loadExpenses() {
