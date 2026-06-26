@@ -51,3 +51,5 @@ async function addExpense() {
 
 // ✅ Ejecutar al cargar
 loadExpenses();
+
+console.log("Supabase conectado");
