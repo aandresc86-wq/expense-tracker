@@ -17,6 +17,7 @@ console.log("Supabase conectado ✅");
 
 let categoryChart = null;
 let categoryBarChart = null;
+let allExpenses = [];
 
 // ===============================
 // AUTH FUNCTIONS
@@ -188,11 +189,52 @@ async function loadExpenses() {
 
   console.log("Gastos cargados:", data);
 
-  renderExpenseList(data);
-  updateDashboard(data);
-  renderCategoryChart(data);
-  renderCategoryBarChart(data);
+  
+  // Guardamos todos los gastos en memoria
+  allExpenses = data || [];
+
+  // Aplicamos el filtro mensual actual
+  applyMonthlyFilter();
+
+  
+
 }
+
+
+function applyMonthlyFilter() {
+  const monthFilter = document.getElementById("month-filter");
+
+  let filteredExpenses = allExpenses;
+
+  if (monthFilter && monthFilter.value) {
+    const selectedMonth = monthFilter.value; 
+    // Formato esperado: YYYY-MM
+
+    filteredExpenses = allExpenses.filter((expense) => {
+      return expense.date && expense.date.startsWith(selectedMonth);
+    });
+
+    console.log(`Filtro aplicado para el mes: ${selectedMonth}`, filteredExpenses);
+  } else {
+    console.log("Sin filtro mensual. Mostrando todos los gastos.");
+  }
+
+  renderExpenseList(filteredExpenses);
+  updateDashboard(filteredExpenses);
+  renderCategoryChart(filteredExpenses);
+  renderCategoryBarChart(filteredExpenses);
+}
+
+function clearMonthlyFilter() {
+  const monthFilter = document.getElementById("month-filter");
+
+  if (monthFilter) {
+    monthFilter.value = "";
+  }
+
+  applyMonthlyFilter();
+}
+
 
 function renderExpenseList(expenses) {
   const list = document.getElementById("expense-list");
