@@ -65,8 +65,22 @@
 
       </section>
 
+
+</section>
+
+      <!-- MONTH FILTER -->
+      <section class="card">
+        <h2>Monthly Filter</h2>
+      
+        <label for="month-filter">Select month:</label>
+        <input type="month" id="month-filter" onchange="applyMonthlyFilter()" />
+      
+        <button class="secondary" onclick="clearMonthlyFilter()">Clear Filter</button>
+      </section>
+
       <!-- ADD EXPENSE -->
       <section class="card">
+
         <h2>Add Expense</h2>
 
         <input type="date" id="date" />
@@ -97,11 +111,6 @@
         <button onclick="addExpense()">Add Expense</button>
       </section>
 
-      <!-- CHART 
-      <section class="card">
-        <h2>Expenses by Category</h2>
-        <canvas id="categoryChart"></canvas>
-      </section> -->
 
 
       <!-- DOUGHNUT CHART -->
@@ -131,12 +140,6 @@
   <!-- Supabase JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  
-  
-  
-
-
-  
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
