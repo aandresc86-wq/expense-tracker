@@ -143,25 +143,25 @@ Key insights available:
 ```bash
 git clone https://github.com/aandresc86-wq/expense-tracker.git
 
-2. Configure Supabase
+### 2. Configure Supabase
 
 Create project
 Enable Auth (Email provider)
 Create expenses table
 Configure RLS policies
 
-3. Configure environment
+### 3. Configure environment
 Edit app.js:
 
 const supabaseUrl = "YOUR_PROJECT_URL";
 const supabaseKey = "YOUR_ANON_PUBLIC_KEY";
 
-4. Deploy
+### 4. Deploy
 
 Push to GitHub
 Enable GitHub Pages
 
-📌 ATS Keywords (for Data Roles)
+## 📌 ATS Keywords (for Data Roles)
 
 Data Analysis
 Data Visualization
@@ -178,7 +178,7 @@ API Integration
 Frontend Analytics Apps
 
 
-💼 Use Case for Recruiters
+## 💼 Use Case for Recruiters
 This project demonstrates:
 ✅ End-to-end data lifecycle
 ✅ Cloud-based analytics architecture
@@ -186,7 +186,7 @@ This project demonstrates:
 ✅ Business-oriented dashboards
 ✅ Data-driven decision support
 
-🚀 Future Improvements
+## 🚀 Future Improvements
 
 Category dimension table (normalized model)
 Time-series visualizations (trend line)
@@ -195,12 +195,12 @@ Budget vs actual analysis
 Predictive analytics (forecasting)
 
 
-👨‍💻 Author
+## 👨‍💻 Author
 Andrés Carballo
 Chemical Engineer | MBA | Data Analytics & AI Diploma
 Transitioning into Data Analytics / Data Science roles
 
-⭐ Key Takeaway
+## ⭐ Key Takeaway
 This project showcases the ability to:
 
 Transform raw transactional data into insights
