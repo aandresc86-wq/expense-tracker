@@ -1,88 +1,80 @@
 # 📊 Personal Finance Analytics App
 
 ## 🚀 Overview
-A full-stack **data-driven web application** designed to track, analyze, and visualize personal expenses.
+A full-stack data-driven web application designed to track, analyze, and visualize personal expenses.
 
-This project demonstrates end-to-end capabilities from **data ingestion, storage, transformation, and visualization**, using modern cloud-based tools and databases.
-
-The application enables users to:
-- Track expenses in real-time
-- Analyze monthly spending behavior
-- Visualize financial patterns through interactive dashboards
-- Compare performance month-over-month (MoM)
+This project demonstrates end-to-end capabilities across the data lifecycle: data ingestion, storage, transformation, and visualization, using cloud-based tools and modern web technologies.
 
 ---
 
 ## 🎯 Business Problem
 Individuals often lack visibility into their spending patterns, making it difficult to:
-- Identify overspending categories
-- Monitor financial trends
+- Identify high-cost categories
+- Monitor financial trends over time
 - Make data-driven financial decisions
 
 ---
 
 ## 💡 Solution
-This solution provides a **self-service analytics platform** where users can:
-- Store transactional data (expenses)
-- Categorize spending
-- Filter and analyze data at a monthly level
-- Gain insights using visual dashboards
+A self-service analytics platform that allows users to:
+- Track expenses in real-time
+- Categorize transactions
+- Filter and analyze data monthly
+- Generate insights through interactive dashboards
 
 ---
 
 ## 🧱 Architecture
+
 Frontend (GitHub Pages)
-↓
+        ↓
 Supabase (Backend-as-a-Service)
-↓
+        ↓
 PostgreSQL Database (Cloud)
+
 ---
 
 ## 🛠️ Tech Stack
 
 ### 🌐 Frontend
-- HTML5, CSS3, JavaScript
+- HTML5
+- CSS3
+- JavaScript
 - Chart.js (data visualization)
-- Deployed via **GitHub Pages**
 
 ### 🧠 Backend / Data Layer
-- **Supabase**
-  - PostgreSQL database
-  - REST API auto-generated
+- Supabase
+  - PostgreSQL Database
+  - REST API (auto-generated)
   - Authentication (Supabase Auth)
   - Row Level Security (RLS)
 
-### ☁️ Cloud & Deployment
-- GitHub (source control)
-- GitHub Pages (hosting)
-- Supabase Cloud (database + auth)
+### ☁️ Cloud & Deployment Platforms
+- GitHub (version control)
+- GitHub Pages (frontend hosting)
+- Supabase Cloud (database + authentication)
 
 ---
 
 ## 🔐 Data Security
-- Implemented **Row Level Security (RLS)** in PostgreSQL
-- Data access restricted using:
-
-auth.uid() = user_id
-- Ensures users can only access their own data
+- Row Level Security (RLS) implemented in PostgreSQL
+- Data access controlled using:
+  auth.uid() = user_id
+- Ensures each user can only access their own records
 
 ---
 
 ## 📊 Features
 
 ### ✅ Expense Management
-- Create and store transactions
-- Categorization of expenses
+- Add and store expenses
+- Categorize transactions
 - Real-time updates
 
-### ✅ Dynamic Category Handling
-- Controlled categories via dropdown (data quality improvement)
-- Standardized inputs for accurate analytics
-
 ### ✅ Monthly Filtering
-- Interactive filter by month (YYYY-MM)
-- Default selection = current month
-- All dashboard components update dynamically
+- Filter data by selected month (YYYY-MM)
+- Default selection: current month
+- Dynamic update of all dashboard elements
 
 ### ✅ KPI Dashboard
 - Total Expenses
@@ -91,118 +83,113 @@ auth.uid() = user_id
 
 ### ✅ Month-over-Month Analysis (MoM)
 - Comparison vs previous month
-- % growth / decline
-- Visual indicators:
-- 🔴 increase in spending
-- 🟢 reduction in spending
+- Percentage change indicators
+- Visual interpretation:
+  - Increase in spending → negative (red)
+  - Decrease in spending → positive (green)
 
 ### ✅ Data Visualization
-- **Doughnut Chart**
-- % distribution by category
-- **Horizontal Bar Chart**
-- Ranked categories (highest → lowest spending)
+- Doughnut Chart
+  - Shows percentage distribution by category
+- Horizontal Bar Chart
+  - Sorted ranking of categories (highest to lowest spending)
 
 ---
 
 ## 📈 Key Analytics Capabilities
-
-- Data aggregation by category
-- Monthly trend analysis
-- Relative distribution (%)
-- Ranking analysis (Top-N categories)
+- Aggregation by category
+- Month-over-month comparison
+- Percentage distribution analysis
+- Ranking-based insights (Top-N categories)
 - Time-based filtering
 
 ---
 
-## 📷 Dashboard Example
+## 🧠 Data Model
 
-Key insights available:
-- Spending distribution across categories
-- Identification of major cost drivers
-- Month-over-month financial trend
+Table: expenses
 
----
-
-## 🧠 Data Modeling
-
-### Main Table: `expenses`
-
-| Field       | Type        |
-|------------|------------|
-| user_id     | UUID       |
-| date        | DATE       |
-| amount      | NUMERIC    |
-| category    | TEXT       |
-| description | TEXT       |
+Fields:
+- user_id (UUID)
+- date (DATE)
+- amount (NUMERIC)
+- category (TEXT)
+- description (TEXT)
 
 ---
 
 ## ⚙️ Setup Instructions
 
-### 1. Clone repository
-```bash
-git clone https://github.com/aandresc86-wq/expense-tracker.git
+1. Clone repository
+   git clone https://github.com/aandresc86-wq/expense-tracker.git
 
-### 2. Configure Supabase
+2. Configure Supabase
+   - Create new project
+   - Enable Authentication (Email provider)
+   - Create 'expenses' table
+   - Configure RLS policies
 
-Create project
-Enable Auth (Email provider)
-Create expenses table
-Configure RLS policies
+3. Configure environment
+   Update in app.js:
+   const supabaseUrl = "YOUR_PROJECT_URL";
+   const supabaseKey = "YOUR_ANON_PUBLIC_KEY";
 
-### 3. Configure environment
-Edit app.js:
+4. Deploy
+   - Push to GitHub
+   - Enable GitHub Pages
 
-const supabaseUrl = "YOUR_PROJECT_URL";
-const supabaseKey = "YOUR_ANON_PUBLIC_KEY";
+---
 
-### 4. Deploy
+## 📌 ATS Keywords (for Data Analyst roles)
 
-Push to GitHub
-Enable GitHub Pages
+- Data Analysis
+- Data Visualization
+- Business Intelligence (BI)
+- Dashboard Development
+- KPI Metrics
+- SQL / PostgreSQL
+- Data Modeling
+- Data Transformation
+- ETL Concepts
+- Time Series Analysis
+- Cloud Data Platforms (Supabase)
+- API Integration
+- Analytical Applications
 
-## 📌 ATS Keywords (for Data Roles)
+---
 
-Data Analysis
-Data Visualization
-Dashboard Development
-KPI Metrics
-Business Intelligence (BI)
-SQL / PostgreSQL
-Data Modeling
-ETL Concepts
-Data Filtering & Transformation
-Time Series Analysis
-Cloud Data Platforms (Supabase)
-API Integration
-Frontend Analytics Apps
+## 💼 Recruiter Perspective
 
-
-## 💼 Use Case for Recruiters
 This project demonstrates:
-✅ End-to-end data lifecycle
-✅ Cloud-based analytics architecture
-✅ SQL + front-end integration
-✅ Business-oriented dashboards
-✅ Data-driven decision support
+
+- End-to-end data pipeline thinking
+- Integration between SQL databases and visualization layers
+- Business-oriented dashboard design
+- Cloud-based data architecture
+- User-level data security (multi-tenant systems)
+
+---
 
 ## 🚀 Future Improvements
 
-Category dimension table (normalized model)
-Time-series visualizations (trend line)
-Export to CSV / Excel
-Budget vs actual analysis
-Predictive analytics (forecasting)
+- Normalized data model (category dimension table)
+- Time-series trend visualization
+- Export to CSV / Excel
+- Budget vs Actual analysis
+- Predictive analytics (forecasting)
 
+---
 
 ## 👨‍💻 Author
-Andrés Carballo
-Chemical Engineer | MBA | Data Analytics & AI Diploma
-Transitioning into Data Analytics / Data Science roles
+
+Andrés Carballo  
+Chemical Engineer | MBA | Data Analytics & AI Diploma  
+
+---
 
 ## ⭐ Key Takeaway
-This project showcases the ability to:
 
-Transform raw transactional data into insights
-Build analytical dashboards from scratch
-Design scalable, cloud-based data applications
+This project showcases the ability to:
+- Transform raw transactional data into actionable insights
+- Design dashboards with business context
+- Build scalable data-driven web applications
