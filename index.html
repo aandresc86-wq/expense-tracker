@@ -97,11 +97,26 @@
         <button onclick="addExpense()">Add Expense</button>
       </section>
 
-      <!-- CHART -->
+      <!-- CHART 
       <section class="card">
         <h2>Expenses by Category</h2>
         <canvas id="categoryChart"></canvas>
+      </section> -->
+
+
+      <!-- DOUGHNUT CHART -->
+      <section class="card">
+        <h2>Expenses by Category (%)</h2>
+        <canvas id="categoryChart"></canvas>
       </section>
+      
+      <!-- HORIZONTAL BAR CHART -->
+      <section class="card">
+        <h2>Expenses by Category - Ranking</h2>
+        <canvas id="categoryBarChart"></canvas>
+      </section>
+
+      
 
       <!-- EXPENSE LIST -->
       <section class="card">
@@ -116,11 +131,21 @@
   <!-- Supabase JS -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+  
+  
+  
+
+
+  
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+  
+  <!-- Chart.js Data Labels Plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+  
   <!-- App JS -->
   <script src="app.js"></script>
+
 
 </body>
 </html>
