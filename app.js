@@ -240,7 +240,7 @@ function applyMonthlyFilter() {
   }
 
   renderExpenseList(filteredExpenses);
-  updateDashboard(filteredExpenses);
+  updateDashboard(filteredExpenses, monthFilter.value);
   renderCategoryChart(filteredExpenses);
 
   // ✅ importante: usar el nombre correcto de tu función
@@ -300,34 +300,63 @@ function renderExpenseList(expenses) {
 // DASHBOARD FUNCTIONS
 // ===============================
 
-function updateDashboard(expenses) {
-  const totalExpensesElement = document.getElementById("total-expenses");
-  const expenseCountElement = document.getElementById("expense-count");
-  const topCategoryElement = document.getElementById("top-category");
+function getPreviousMonth(selectedMonth) {
+  const [year, month] = selectedMonth.split("-").map(Number);
 
-  if (!expenses || expenses.length === 0) {
-    totalExpensesElement.textContent = "$0.00";
-    expenseCountElement.textContent = "0";
-    topCategoryElement.textContent = "-";
-    return;
-  }
+  const date = new Date(year, month - 2, 1);
 
-  const total = expenses.reduce((sum, expense) => {
+  const previousYear = date.getFullYear();
+  const previousMonth = String(date.getMonth() + 1).padStart(2, "0");
+
+  return `${previousYear}-${previousMonth}`;
+}
+
+function filterExpensesByMonth(expenses, month) {
+  return expenses.filter((expense) => {
+    if (!expense.date) return false;
+    return expense.date.substring(0, 7) === month;
+  });
+}
+
+function calculateTotal(expenses) {
+  return expenses.reduce((sum, expense) => {
     return sum + Number(expense.amount);
   }, 0);
+}
 
-  const categoryTotals = {};
+function calculatePercentageChange(currentValue, previousValue) {
+  if (previousValue === 0 && currentValue === 0) {
+    return {
+      text: "No change vs previous month",
+      className: "neutral"
+    };
+  }
 
-  expenses.forEach((expense) => {
-    const category = expense.category;
-    const amount = Number(expense.amount);
+  if (previousValue === 0 && currentValue > 0) {
+    return {
+      text: "New spending vs previous month",
+      className: "negative"
+    };
+  }
 
-    if (!categoryTotals[category]) {
-      categoryTotals[category] = 0;
-    }
+  const change = ((currentValue - previousValue) / previousValue) * 100;
+  const sign = change >= 0 ? "+" : "";
 
-    categoryTotals[category] += amount;
-  });
+  return {
+    text: `${sign}${change.toFixed(1)}% vs previous month`,
+    className: change > 0 ? "negative" : change < 0 ? "positive" : "neutral"
+  };
+}
+
+function getTopCategory(expenses) {
+  if (!expenses || expenses.length === 0) {
+    return {
+      category: "-",
+      amount: 0
+    };
+  }
+
+  const categoryTotals = calculateCategoryTotals(expenses);
 
   let topCategory = "-";
   let topAmount = 0;
@@ -339,10 +368,64 @@ function updateDashboard(expenses) {
     }
   });
 
-  totalExpensesElement.textContent = `$${total.toFixed(2)}`;
-  expenseCountElement.textContent = expenses.length;
-  topCategoryElement.textContent = topCategory;
+  return {
+    category: topCategory,
+    amount: topAmount
+  };
 }
+
+function updateDashboard(expenses, selectedMonth = null) {
+  const totalExpensesElement = document.getElementById("total-expenses");
+  const expenseCountElement = document.getElementById("expense-count");
+  const topCategoryElement = document.getElementById("top-category");
+
+  const totalComparisonElement = document.getElementById("total-expenses-comparison");
+  const countComparisonElement = document.getElementById("expense-count-comparison");
+  const topCategoryComparisonElement = document.getElementById("top-category-comparison");
+
+  const currentTotal = calculateTotal(expenses);
+  const currentCount = expenses.length;
+  const currentTopCategory = getTopCategory(expenses);
+
+  totalExpensesElement.textContent = `$${currentTotal.toFixed(2)}`;
+  expenseCountElement.textContent = currentCount;
+  topCategoryElement.textContent = currentTopCategory.category;
+
+  if (!selectedMonth) {
+    totalComparisonElement.textContent = "vs previous month: -";
+    countComparisonElement.textContent = "vs previous month: -";
+    topCategoryComparisonElement.textContent = "previous month: -";
+    return;
+  }
+
+  const previousMonth = getPreviousMonth(selectedMonth);
+  const previousMonthExpenses = filterExpensesByMonth(allExpenses, previousMonth);
+
+  const previousTotal = calculateTotal(previousMonthExpenses);
+  const previousCount = previousMonthExpenses.length;
+  const previousTopCategory = getTopCategory(previousMonthExpenses);
+
+  const totalChange = calculatePercentageChange(currentTotal, previousTotal);
+  const countChange = calculatePercentageChange(currentCount, previousCount);
+
+  totalComparisonElement.textContent = `${totalChange.text} | Previous: $${previousTotal.toFixed(2)}`;
+  countComparisonElement.textContent = `${countChange.text} | Previous: ${previousCount}`;
+
+  totalComparisonElement.className = totalChange.className;
+  countComparisonElement.className = countChange.className;
+
+  if (previousTopCategory.category === "-") {
+    topCategoryComparisonElement.textContent = "previous month: no data";
+  } else {
+    topCategoryComparisonElement.textContent =
+      `previous month: ${previousTopCategory.category} ($${previousTopCategory.amount.toFixed(2)})`;
+  }
+}
+
+
+
+
+
 
 
 function renderCategoryChart(expenses) {
