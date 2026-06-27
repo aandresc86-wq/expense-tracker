@@ -189,15 +189,34 @@ async function loadExpenses() {
 
   console.log("Gastos cargados:", data);
 
-  
   // Guardamos todos los gastos en memoria
   allExpenses = data || [];
 
+  // ✅ inicializar filtro con mes actual
+  setCurrentMonthFilter();
+
   // Aplicamos el filtro mensual actual
   applyMonthlyFilter();
+}
 
-  
 
+function setCurrentMonthFilter() {
+  const monthInput = document.getElementById("month-filter");
+
+  if (!monthInput) return;
+
+  const today = new Date();
+
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+
+  const currentMonth = `${year}-${month}`;
+
+  // ✅ solo setea si está vacío
+  if (!monthInput.value) {
+    monthInput.value = currentMonth;
+    console.log("Mes actual seleccionado automáticamente:", currentMonth);
+  }
 }
 
 
@@ -207,23 +226,39 @@ function applyMonthlyFilter() {
   let filteredExpenses = allExpenses;
 
   if (monthFilter && monthFilter.value) {
-    const selectedMonth = monthFilter.value; 
-    // Formato esperado: YYYY-MM
+    const selectedMonth = monthFilter.value;
 
     filteredExpenses = allExpenses.filter((expense) => {
-      return expense.date && expense.date.startsWith(selectedMonth);
+      if (!expense.date) return false;
+
+      return expense.date.substring(0, 7) === selectedMonth;
     });
 
-    console.log(`Filtro aplicado para el mes: ${selectedMonth}`, filteredExpenses);
+    console.log("Filtro aplicado:", selectedMonth);
   } else {
-    console.log("Sin filtro mensual. Mostrando todos los gastos.");
+    console.log("Sin filtro mensual");
   }
 
   renderExpenseList(filteredExpenses);
   updateDashboard(filteredExpenses);
   renderCategoryChart(filteredExpenses);
-  renderCategoryBarChart(filteredExpenses);
+
+  // ✅ importante: usar el nombre correcto de tu función
+  if (typeof renderCategoryBarChart === "function") {
+    renderCategoryBarChart(filteredExpenses);
+  }
+
+  if (typeof renderHorizontalBarChart === "function") {
+    renderHorizontalBarChart(filteredExpenses);
+  }
 }
+
+
+
+
+
+
+
 
 function clearMonthlyFilter() {
   const monthFilter = document.getElementById("month-filter");
