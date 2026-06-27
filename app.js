@@ -296,9 +296,29 @@ function renderExpenseList(expenses) {
   });
 }
 
+
+
+
 // ===============================
-// DASHBOARD FUNCTIONS
+// HELPERS / UTILS
 // ===============================
+
+function calculateCategoryTotals(expenses) {
+  const categoryTotals = {};
+
+  expenses.forEach((expense) => {
+    const category = expense.category;
+    const amount = Number(expense.amount);
+
+    if (!categoryTotals[category]) {
+      categoryTotals[category] = 0;
+    }
+
+    categoryTotals[category] += amount;
+  });
+
+  return categoryTotals;
+}
 
 function getPreviousMonth(selectedMonth) {
   const [year, month] = selectedMonth.split("-").map(Number);
@@ -375,23 +395,11 @@ function getTopCategory(expenses) {
 }
 
 
-function calculateCategoryTotals(expenses) {
-  const categoryTotals = {};
 
-  expenses.forEach((expense) => {
-    const category = expense.category;
-    const amount = Number(expense.amount);
 
-    if (!categoryTotals[category]) {
-      categoryTotals[category] = 0;
-    }
-
-    categoryTotals[category] += amount;
-  });
-
-  return categoryTotals;
-}
-
+// ===============================
+// DASHBOARD FUNCTIONS
+// ===============================
 
 function updateDashboard(expenses, selectedMonth = null) {
   const totalExpensesElement = document.getElementById("total-expenses");
