@@ -133,3 +133,13 @@ canvas {
     align-items: flex-start;
   }
 }
+
+
+canvas {
+  width: 100% !important;
+  max-height: 420px;
+}
+
+#categoryBarChart {
+  max-height: 520px;
+}
