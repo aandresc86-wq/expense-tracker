@@ -140,7 +140,7 @@ Fields:
 
 ---
 
-## 📌 ATS Keywords (for Data Analyst roles)
+## 📌 Keywords
 
 - Data Analysis
 - Data Visualization
@@ -158,7 +158,7 @@ Fields:
 
 ---
 
-## 💼 Recruiter Perspective
+## 💼 Skills
 
 This project demonstrates:
 
