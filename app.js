@@ -16,6 +16,7 @@ console.log("Supabase conectado ✅");
 // ===============================
 
 let categoryChart = null;
+let categoryBarChart = null;
 
 // ===============================
 // AUTH FUNCTIONS
@@ -190,6 +191,7 @@ async function loadExpenses() {
   renderExpenseList(data);
   updateDashboard(data);
   renderCategoryChart(data);
+  renderCategoryBarChart(data);
 }
 
 function renderExpenseList(expenses) {
@@ -265,10 +267,20 @@ function updateDashboard(expenses) {
   topCategoryElement.textContent = topCategory;
 }
 
+
 function renderCategoryChart(expenses) {
   const ctx = document.getElementById("categoryChart");
 
   if (!ctx) {
+    console.error("categoryChart canvas not found.");
+    return;
+  }
+
+  if (!expenses || expenses.length === 0) {
+    if (categoryChart) {
+      categoryChart.destroy();
+      categoryChart = null;
+    }
     return;
   }
 
@@ -288,6 +300,26 @@ function renderCategoryChart(expenses) {
   const labels = Object.keys(categoryTotals);
   const values = Object.values(categoryTotals);
 
+  const total = values.reduce((sum, value) => sum + value, 0);
+
+  const colors = [
+    "#2563eb",
+    "#16a34a",
+    "#dc2626",
+    "#f59e0b",
+    "#7c3aed",
+    "#0891b2",
+    "#db2777",
+    "#65a30d",
+    "#ea580c",
+    "#0f766e",
+    "#9333ea",
+    "#475569",
+    "#84cc16",
+    "#e11d48",
+    "#0284c7"
+  ];
+
   if (categoryChart) {
     categoryChart.destroy();
   }
@@ -300,16 +332,7 @@ function renderCategoryChart(expenses) {
         {
           label: "Expenses by Category",
           data: values,
-          backgroundColor: [
-            "#2563eb",
-            "#16a34a",
-            "#dc2626",
-            "#f59e0b",
-            "#7c3aed",
-            "#0891b2",
-            "#db2777",
-            "#65a30d"
-          ],
+          backgroundColor: colors,
           hoverOffset: 4
         }
       ]
@@ -318,12 +341,167 @@ function renderCategoryChart(expenses) {
       responsive: true,
       plugins: {
         legend: {
-          position: "bottom"
+          position: "bottom",
+          labels: {
+            generateLabels: function (chart) {
+              const data = chart.data;
+              const dataset = data.datasets[0];
+
+              return data.labels.map((label, index) => {
+                const value = Number(dataset.data[index]);
+                const percentage =
+                  total > 0 ? ((value / total) * 100).toFixed(1) : "0.0";
+
+                return {
+                  text: `${label}: ${percentage}%`,
+                  fillStyle: dataset.backgroundColor[index],
+                  strokeStyle: dataset.backgroundColor[index],
+                  lineWidth: 1,
+                  hidden: false,
+                  index: index
+                };
+              });
+            }
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: function (context) {
+              const label = context.label || "";
+              const value = Number(context.raw);
+              const percentage =
+                total > 0 ? ((value / total) * 100).toFixed(1) : "0.0";
+
+              return `${label}: $${value.toFixed(2)} (${percentage}%)`;
+            }
+          }
+        },
+        datalabels: {
+          color: "#ffffff",
+          font: {
+            weight: "bold",
+            size: 12
+          },
+          formatter: function (value) {
+            const percentage =
+              total > 0 ? ((value / total) * 100).toFixed(1) : "0.0";
+
+            if (Number(percentage) < 4) {
+              return "";
+            }
+
+            return `${percentage}%`;
+          }
         }
       }
-    }
+    },
+    plugins: [ChartDataLabels]
   });
 }
+
+
+function renderCategoryBarChart(expenses) {
+  const ctx = document.getElementById("categoryBarChart");
+
+  if (!ctx) {
+    console.error("categoryBarChart canvas not found.");
+    return;
+  }
+
+  if (!expenses || expenses.length === 0) {
+    if (categoryBarChart) {
+      categoryBarChart.destroy();
+      categoryBarChart = null;
+    }
+    return;
+  }
+
+  const categoryTotals = {};
+
+  expenses.forEach((expense) => {
+    const category = expense.category;
+    const amount = Number(expense.amount);
+
+    if (!categoryTotals[category]) {
+      categoryTotals[category] = 0;
+    }
+
+    categoryTotals[category] += amount;
+  });
+
+  const sortedCategories = Object.entries(categoryTotals)
+    .sort((a, b) => b[1] - a[1]);
+
+  const labels = sortedCategories.map((item) => item[0]);
+  const values = sortedCategories.map((item) => item[1]);
+
+  if (categoryBarChart) {
+    categoryBarChart.destroy();
+  }
+
+  categoryBarChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "Total Expenses",
+          data: values,
+          backgroundColor: "#2563eb",
+          borderRadius: 6
+        }
+      ]
+    },
+    options: {
+      indexAxis: "y",
+      responsive: true,
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          callbacks: {
+            label: function (context) {
+              const value = Number(context.raw);
+              return `$${value.toFixed(2)}`;
+            }
+          }
+        },
+        datalabels: {
+          anchor: "end",
+          align: "right",
+          color: "#111827",
+          font: {
+            weight: "bold"
+          },
+          formatter: function (value) {
+            return `$${Number(value).toFixed(2)}`;
+          }
+        }
+      },
+      scales: {
+        x: {
+          beginAtZero: true,
+          ticks: {
+            callback: function (value) {
+              return "$" + value;
+            }
+          }
+        },
+        y: {
+          ticks: {
+            autoSkip: false
+          }
+        }
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
+}
+
+
+
+
 
 // ===============================
 // INITIALIZE APP
